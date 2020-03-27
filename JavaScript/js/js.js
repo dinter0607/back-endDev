@@ -32,9 +32,9 @@ function hide_img(){
     var x = document.getElementById("img-change");
     if (x.style.display === "none") {
       x.style.display = "block";
-      document.getElementById("button").innerHTML = "Ẩn";
+      document.getElementById("show").style.display = "none";
     } else {
       x.style.display = "none";
-      document.getElementById("button").innerHTML = "Hiện";
+      document.getElementById("show").style.display = "block";
     }
 }

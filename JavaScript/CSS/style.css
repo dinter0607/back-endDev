@@ -62,8 +62,11 @@ li{
     background-color:#f5f5f5;
     position:relative;
 }
-#show-hidden #close{
+#show-hidden span{
     position:absolute;right:5px;top:5px;
+}
+#show{
+    display:none;
 }
 #calculator-table input[type="button"]{
     width:100%;
