@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="CSS/style.css">
+    <script src="js/js.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="CSS/font-awesome.min.css">
+</head>
+<body>
+    <div id="container">
+        <h1> Đây là một số ví dụ về JavaScript </h1>
+        <div id="content">
+            <ul>
+                <li> Xây dựng một cái đồng hồ thời gian thực.</li>
+                <div id="time"></div>
+                <script>time_startTime();</script>  
+                <li>Kiểm tra dữ liệu nhập vào từ biểu mẫu <i>(form)</i>.</li>
+                <div id="form">
+                    <form method="post" id="submit_form">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td colspan="2" style="text-align:center;font-size:20px;padding-bottom:10px">CẬP NHẬT THÔNG TIN CÁ NHÂN</td>
+                                </tr>
+                                <tr>
+                                    <td>Họ tên:</td>
+                                    <td><input type="text" placeholder="Nhập họ tên" required="" style="padding:3px;width:100%" id="hoten" autocomplete="off"></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:22px 0px">Ngày sinh:</td>
+                                    <td><input type="date" required="" id="ngaysinh"></td>
+                                </tr>
+                                <tr>
+                                    <td>Giới tính:</td>
+                                    <td>
+                                        <select id="gioitinh">
+                                            <option value="Nam" selected="selected" >Nam</option>
+                                            <option value="Nữ"> Nữ</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:center;padding-top:15px"><button type="button" onclick="Submit_form()">Xác nhận</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div id="replace_form">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td colspan="2" style="text-align:center;font-size:20px;padding-bottom:10px">THÔNG TIN CÁ NHÂN</td>
+                            </tr>
+                            <tr>
+                                <td>Họ tên:</td>
+                                <td id="replace_hoten">Nhập thông tin ở form trên rồi submit nha ^^</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:22px 0px">Ngày sinh:</td>
+                                <td id="replace_ngaysinh">Như ô họ tên ^^</td>
+                            </tr>
+                            <tr>
+                                <td>Giới tính:</td>
+                                <td id="replace_gioitinh">Như ô ngày sinh</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <li> Hiện và ẩn nội dung trên trang web.</li>
+                <div id="show-hidden">
+                    <button id="button" onclick="hide_img()">Ẩn</button>
+                    <div id="img-change">
+                        <img alt="image" src="img/javascript.png">
+                    </div>
+                </div>
+                <li> Xây dựng một cái máy tính toán học đơn giản.</li>
+                <div style="margin-top:10px">
+                    <form name="calculator">
+                        <table id="calculator-table">
+                            <tbody>
+                                <tr>
+                                    <td colspan="4"><input type="text" size="23" length="19" value="" name="ans" id="input-number"></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="button" value="7" onmousedown="document.calculator.ans.value+='7'"></td>
+                                    <td><input type="button" value="8" onclick="document.calculator.ans.value+='8'"></td>
+                                    <td><input type="button" value="9" onclick="document.calculator.ans.value+='9'"></td>
+                                    <td><input type="button" value="/" onclick="document.calculator.ans.value+='/'"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:25%"><input type="button" value="4" onclick="document.calculator.ans.value+='4'"></td>
+                                    <td style="width:25%"><input type="button" value="5" onclick="document.calculator.ans.value+='5'"></td>
+                                    <td style="width:25%"><input type="button" value="6" onclick="document.calculator.ans.value+='6'"></td>
+                                    <td style="width:25%"><input type="button" value="*" onclick="document.calculator.ans.value+='*'"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:25%"><input type="button" value="1" onclick="document.calculator.ans.value+='1'"></td>
+                                    <td style="width:25%"><input type="button" value="2" onclick="document.calculator.ans.value+='2'"></td>
+                                    <td style="width:25%"><input type="button" value="3" onclick="document.calculator.ans.value+='3'"></td>
+                                    <td style="width:25%"><input type="button" value="-" onclick="document.calculator.ans.value+='-'"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:25%"><input type="button" value="Xóa" onclick="document.calculator.ans.value=''"></td>
+                                    <td style="width:25%"><input type="button" value="0" onclick="document.calculator.ans.value+='0'"></td>
+                                    <td style="width:25%"><input type="button" value="=" onclick="document.calculator.ans.value=eval(document.calculator.ans.value)"></td>
+                                    <td style="width:25%"><input type="button" value="+" onclick="document.calculator.ans.value+='+'"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </ul>
+        </div>
+    </div>
+</body>
+</html> 
