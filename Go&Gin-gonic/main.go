@@ -93,7 +93,7 @@ func Create(c *gin.Context) {
 	var json CreateUser
 
 	if err := c.ShouldBindJSON(&json); err == nil {
-		insUser, err := db.Prepare("INSERT INTO account(user_name, full_name) VALUES('?','?')")
+		insUser, err := db.Prepare("INSERT INTO account(user_name, full_name) VALUES($1, $2)")
 		if err != nil {
 			c.JSON(500, gin.H{
 				"messages": err,
@@ -123,7 +123,7 @@ func Update(c *gin.Context) {
 
 	var json UpdateUser
 	if err := c.ShouldBindJSON(&json); err == nil {
-		edit, err := db.Prepare("UPDATE account SET user_name='?', full_name='?' WHERE id= " + c.Param("id"))
+		edit, err := db.Prepare("UPDATE account SET user_name=$1, full_name=$2 WHERE id= " + c.Param("id"))
 		if err != nil {
 			panic(err.Error())
 		}
