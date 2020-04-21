@@ -1,0 +1,15 @@
+version: '3'
+services:
+  api:
+    container_name: 'api'
+    build: ./app
+    restart: 'on-failure'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - elasticsearch
+  elasticsearch:
+    container_name: 'elasticsearch'
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.6.2'
+    ports:
+      - '9200:9200'
