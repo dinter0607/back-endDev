@@ -3,6 +3,8 @@ package main
 import (
 	"math"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type Bounds struct {
@@ -38,7 +40,8 @@ func rad2deg(r float64) float64 {
 	return 180.0 * r / math.Pi
 }
 
-func testGetBounds(t *testing.T) {
+func TestGetBounds(t *testing.T) {
+	assert := assert.New(t)
 	expectBounds := &Bounds{
 		NorthEast: LatLng{
 			Lat: 16.047200200000002,
@@ -52,9 +55,9 @@ func testGetBounds(t *testing.T) {
 
 	bounds := getBoundByLatLngRadius(16.002284435794024, 108.17322189936608, 5000)
 
-	if bounds != expectBounds {
-		t.Errorf("Expect: %v, but actualy: %v", expectBounds, bounds)
-	}
+	// assert equality
+	assert.Equal(bounds, expectBounds, "they should be equal")
+
 }
 
 func getBoundByLatLngRadius(lat, lng float64, radius float64) *Bounds {
