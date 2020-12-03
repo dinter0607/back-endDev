@@ -101,11 +101,11 @@ func TestGetBounds(t *testing.T) {
 
 	for caseNumber, expectBound := range expectBounds {
 		boundExpect := expectBound.Bounds
-		conditiontestcase := bounds.NorthEast.Lat != boundExpect.NorthEast.Lat ||
+		conditionTestCase := bounds.NorthEast.Lat != boundExpect.NorthEast.Lat ||
 			bounds.NorthEast.Lng != boundExpect.NorthEast.Lng ||
 			bounds.SouthWest.Lat != boundExpect.SouthWest.Lat ||
 			bounds.SouthWest.Lng != boundExpect.SouthWest.Lng
-		assert(t, conditiontestcase, "Case number %d, Expect expectBounds %v, but Bounds %b", caseNumber, bounds, boundExpect, bounds)
+		assert(t, conditionTestCase, "Case number %d, Expect expectBounds %v, but Bounds %b", caseNumber, bounds, boundExpect, bounds)
 	}
 
 }
