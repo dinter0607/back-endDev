@@ -1,10 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"math"
+	"path/filepath"
+	"runtime"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 type Bounds struct {
@@ -14,6 +15,10 @@ type Bounds struct {
 type LatLng struct {
 	Lat float64
 	Lng float64
+}
+
+type TestCase struct {
+	Bounds *Bounds
 }
 
 var (
@@ -41,22 +46,67 @@ func rad2deg(r float64) float64 {
 }
 
 func TestGetBounds(t *testing.T) {
-	assert := assert.New(t)
-	expectBounds := &Bounds{
-		NorthEast: LatLng{
-			Lat: 16.047200200000002,
-			Lng: 108.21994827817515,
+	expectBounds := []TestCase{
+		TestCase{
+			&Bounds{
+				NorthEast: LatLng{
+					Lat: 0,
+					Lng: 0,
+				},
+				SouthWest: LatLng{
+					Lat: 0,
+					Lng: 0,
+				},
+			},
 		},
-		SouthWest: LatLng{
-			Lat: 15.957368671588046,
-			Lng: 108.12649552055703,
+		TestCase{
+			&Bounds{
+				NorthEast: LatLng{
+					Lat: 11.123123213,
+					Lng: 100.1202309,
+				},
+				SouthWest: LatLng{
+					Lat: 11.1239823498723,
+					Lng: -100.1202309,
+				},
+			},
+		},
+		TestCase{
+			&Bounds{
+				NorthEast: LatLng{
+					Lat: 16.047200200000002,
+					Lng: 108.21994827817515,
+				},
+				SouthWest: LatLng{
+					Lat: 15.957368671588046,
+					Lng: 108.12649552055703,
+				},
+			},
+		},
+		TestCase{
+			&Bounds{
+				NorthEast: LatLng{
+					Lat: 16.047200200000002,
+					Lng: -108.21994827817515,
+				},
+				SouthWest: LatLng{
+					Lat: -15.957368671588046,
+					Lng: 108.12649552055703,
+				},
+			},
 		},
 	}
 
 	bounds := getBoundByLatLngRadius(16.002284435794024, 108.17322189936608, 5000)
 
-	// assert equality
-	assert.Equal(bounds, expectBounds, "they should be equal")
+	for caseNumber, expectBound := range expectBounds {
+		boundExpect := expectBound.Bounds
+		conditiontestcase := bounds.NorthEast.Lat != boundExpect.NorthEast.Lat ||
+			bounds.NorthEast.Lng != boundExpect.NorthEast.Lng ||
+			bounds.SouthWest.Lat != boundExpect.SouthWest.Lat ||
+			bounds.SouthWest.Lng != boundExpect.SouthWest.Lng
+		assert(t, conditiontestcase, "Case number %d, Expect expectBounds %v, but Bounds %b", caseNumber, bounds, boundExpect, bounds)
+	}
 
 }
 
@@ -101,4 +151,14 @@ func getBoundByLatLngRadius(lat, lng float64, radius float64) *Bounds {
 	}
 
 	return bounds
+}
+
+// assert fails the test if the condition is false.
+func assert(tb testing.TB, condition bool, msg string, v ...interface{}) {
+	if !condition {
+		_, file, line, _ := runtime.Caller(1)
+		fmt.Printf("\033[31m%s:%d: "+msg+"\033[39m\n\n", append([]interface{}{filepath.Base(file), line}, v...)...)
+		fmt.Printf("\n")
+		tb.SkipNow()
+	}
 }
