@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"math"
-	"path/filepath"
-	"runtime"
+	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 type Bounds struct {
@@ -18,7 +18,10 @@ type LatLng struct {
 }
 
 type TestCase struct {
-	Bounds *Bounds
+	Lat          float64
+	Lng          float64
+	Radius       float64
+	ExpectBounds *Bounds
 }
 
 var (
@@ -46,33 +49,12 @@ func rad2deg(r float64) float64 {
 }
 
 func TestGetBounds(t *testing.T) {
-	expectBounds := []TestCase{
+	testSuite := []TestCase{
 		TestCase{
-			&Bounds{
-				NorthEast: LatLng{
-					Lat: 0,
-					Lng: 0,
-				},
-				SouthWest: LatLng{
-					Lat: 0,
-					Lng: 0,
-				},
-			},
-		},
-		TestCase{
-			&Bounds{
-				NorthEast: LatLng{
-					Lat: 11.123123213,
-					Lng: 100.1202309,
-				},
-				SouthWest: LatLng{
-					Lat: 11.1239823498723,
-					Lng: -100.1202309,
-				},
-			},
-		},
-		TestCase{
-			&Bounds{
+			Lat:    16.002284435794024,
+			Lng:    108.17322189936608,
+			Radius: 5000.0,
+			ExpectBounds: &Bounds{
 				NorthEast: LatLng{
 					Lat: 16.047200200000002,
 					Lng: 108.21994827817515,
@@ -84,34 +66,49 @@ func TestGetBounds(t *testing.T) {
 			},
 		},
 		TestCase{
-			&Bounds{
+			Lat:    0,
+			Lng:    0,
+			Radius: 5000.0,
+			ExpectBounds: &Bounds{
 				NorthEast: LatLng{
-					Lat: 16.047200200000002,
-					Lng: -108.21994827817515,
+					Lat: 0.04491576420597608,
+					Lng: 0.04491576420597608,
 				},
 				SouthWest: LatLng{
-					Lat: -15.957368671588046,
-					Lng: 108.12649552055703,
+					Lat: -0.04491576420597608,
+					Lng: -0.04491576420597608,
+				},
+			},
+		},
+		TestCase{
+			Lat:    11.3966303,
+			Lng:    106.8267534,
+			Radius: 5000.0,
+			ExpectBounds: &Bounds{
+				NorthEast: LatLng{
+					Lat: 11.441546064205975,
+					Lng: 106.87257259064775,
+				},
+				SouthWest: LatLng{
+					Lat: 11.351714535794024,
+					Lng: 106.78093420935225,
 				},
 			},
 		},
 	}
+	for caseNumber, testCase := range testSuite {
+		bounds := getBoundByLatLngRadius(testCase.Lat, testCase.Lng, testCase.Radius)
 
-	bounds := getBoundByLatLngRadius(16.002284435794024, 108.17322189936608, 5000)
-
-	for caseNumber, expectBound := range expectBounds {
-		boundExpect := expectBound.Bounds
-		conditionTestCase := bounds.NorthEast.Lat != boundExpect.NorthEast.Lat ||
-			bounds.NorthEast.Lng != boundExpect.NorthEast.Lng ||
-			bounds.SouthWest.Lat != boundExpect.SouthWest.Lat ||
-			bounds.SouthWest.Lng != boundExpect.SouthWest.Lng
-		assert(t, conditionTestCase, "Case number %d, Expect expectBounds %v, but Bounds %b", caseNumber, bounds, boundExpect, bounds)
+		assert.Equal(t, testCase.ExpectBounds.NorthEast.Lat, bounds.NorthEast.Lat, "Case number %d, should have Equal NorthEast latitude", caseNumber)
+		assert.Equal(t, testCase.ExpectBounds.NorthEast.Lng, bounds.NorthEast.Lng, "Case number %d, should have Equal NorthEast longitude", caseNumber)
+		assert.Equal(t, testCase.ExpectBounds.SouthWest.Lat, bounds.SouthWest.Lat, "Case number %d, should have Equal NorthEast latitude", caseNumber)
+		assert.Equal(t, testCase.ExpectBounds.SouthWest.Lng, bounds.SouthWest.Lng, "Case number %d, should have Equal NorthEast longitude", caseNumber)
 	}
 
 }
 
 func getBoundByLatLngRadius(lat, lng float64, radius float64) *Bounds {
-	if lat < 0 || lng < 0 || radius < 0 {
+	if radius <= 0 {
 		return nil
 	}
 
@@ -153,12 +150,10 @@ func getBoundByLatLngRadius(lat, lng float64, radius float64) *Bounds {
 	return bounds
 }
 
-// assert fails the test if the condition is false.
-func assert(tb testing.TB, condition bool, msg string, v ...interface{}) {
-	if !condition {
-		_, file, line, _ := runtime.Caller(1)
-		fmt.Printf("\033[31m%s:%d: "+msg+"\033[39m\n\n", append([]interface{}{filepath.Base(file), line}, v...)...)
-		fmt.Printf("\n")
-		tb.SkipNow()
+func assertEqual(t *testing.T, a interface{}, b interface{}) {
+	if a == b {
+		return
 	}
+	// debug.PrintStack()
+	t.Errorf("Received %v (type %v), expected %v (type %v)", a, reflect.TypeOf(a), b, reflect.TypeOf(b))
 }
