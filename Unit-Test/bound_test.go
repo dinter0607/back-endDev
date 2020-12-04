@@ -2,7 +2,6 @@ package main
 
 import (
 	"math"
-	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -151,12 +150,4 @@ func getBoundByLatLngRadius(lat, lng float64, radius float64) *Bounds {
 	}
 
 	return bounds
-}
-
-func assertEqual(t *testing.T, a interface{}, b interface{}) {
-	if a == b {
-		return
-	}
-	// debug.PrintStack()
-	t.Errorf("Received %v (type %v), expected %v (type %v)", a, reflect.TypeOf(a), b, reflect.TypeOf(b))
 }
