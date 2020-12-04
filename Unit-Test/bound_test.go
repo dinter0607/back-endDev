@@ -83,7 +83,7 @@ func TestGetBounds(t *testing.T) {
 		TestCase{
 			Lat:    11.3966303,
 			Lng:    106.8267534,
-			Radius: 5000.0,
+			Radius: 0.0,
 			ExpectBounds: &Bounds{
 				NorthEast: LatLng{
 					Lat: 11.441546064205975,
@@ -98,11 +98,14 @@ func TestGetBounds(t *testing.T) {
 	}
 	for caseNumber, testCase := range testSuite {
 		bounds := getBoundByLatLngRadius(testCase.Lat, testCase.Lng, testCase.Radius)
-
-		assert.Equal(t, testCase.ExpectBounds.NorthEast.Lat, bounds.NorthEast.Lat, "Case number %d, should have Equal NorthEast latitude", caseNumber)
-		assert.Equal(t, testCase.ExpectBounds.NorthEast.Lng, bounds.NorthEast.Lng, "Case number %d, should have Equal NorthEast longitude", caseNumber)
-		assert.Equal(t, testCase.ExpectBounds.SouthWest.Lat, bounds.SouthWest.Lat, "Case number %d, should have Equal NorthEast latitude", caseNumber)
-		assert.Equal(t, testCase.ExpectBounds.SouthWest.Lng, bounds.SouthWest.Lng, "Case number %d, should have Equal NorthEast longitude", caseNumber)
+		if testCase.Radius <= 0 {
+			assert.Nil(t, bounds)
+		} else if assert.NotNil(t, bounds) {
+			assert.Equal(t, testCase.ExpectBounds.NorthEast.Lat, bounds.NorthEast.Lat, "Case number %d, should have Equal NorthEast latitude", caseNumber)
+			assert.Equal(t, testCase.ExpectBounds.NorthEast.Lng, bounds.NorthEast.Lng, "Case number %d, should have Equal NorthEast longitude", caseNumber)
+			assert.Equal(t, testCase.ExpectBounds.SouthWest.Lat, bounds.SouthWest.Lat, "Case number %d, should have Equal NorthEast latitude", caseNumber)
+			assert.Equal(t, testCase.ExpectBounds.SouthWest.Lng, bounds.SouthWest.Lng, "Case number %d, should have Equal NorthEast longitude", caseNumber)
+		}
 	}
 
 }
