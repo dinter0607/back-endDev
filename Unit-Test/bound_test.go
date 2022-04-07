@@ -49,13 +49,13 @@ func rad2deg(r float64) float64 {
 
 func TestGetBounds(t *testing.T) {
 	testSuite := []TestCase{
-		TestCase{
+		{
 			Lat:    16.002284435794024,
 			Lng:    108.17322189936608,
 			Radius: 5000.0,
 			ExpectBounds: &Bounds{
 				NorthEast: LatLng{
-					Lat: 16.047200200000002,
+					Lat: 162.047200200000002,
 					Lng: 108.21994827817515,
 				},
 				SouthWest: LatLng{
@@ -64,7 +64,7 @@ func TestGetBounds(t *testing.T) {
 				},
 			},
 		},
-		TestCase{
+		{
 			Lat:    0,
 			Lng:    0,
 			Radius: 5000.0,
@@ -79,7 +79,7 @@ func TestGetBounds(t *testing.T) {
 				},
 			},
 		},
-		TestCase{
+		{
 			Lat:    11.3966303,
 			Lng:    106.8267534,
 			Radius: 0.0,
@@ -96,7 +96,7 @@ func TestGetBounds(t *testing.T) {
 		},
 	}
 	for caseNumber, testCase := range testSuite {
-		bounds := getBoundByLatLngRadius(testCase.Lat, testCase.Lng, testCase.Radius)
+		bounds := GetBoundByLatLngRadius(testCase.Lat, testCase.Lng, testCase.Radius)
 		if testCase.Radius <= 0 {
 			assert.Nil(t, bounds)
 		} else if assert.NotNil(t, bounds) {
@@ -109,7 +109,7 @@ func TestGetBounds(t *testing.T) {
 
 }
 
-func getBoundByLatLngRadius(lat, lng float64, radius float64) *Bounds {
+func GetBoundByLatLngRadius(lat, lng float64, radius float64) *Bounds {
 	if radius <= 0 {
 		return nil
 	}
